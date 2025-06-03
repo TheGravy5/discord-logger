@@ -15,8 +15,8 @@ with Path('./ids.txt').open() as f:
     loggingid = int(f.readline())
     lguildid = int(f.readline())
 
+# human readable time for logging messages
 from datetime import datetime, timedelta, timezone
-
 def human_readable_time(dt: datetime, now: datetime = None) -> str:
     if not now:
         now = datetime.now(tz=timezone.utc)
@@ -37,19 +37,11 @@ def human_readable_time(dt: datetime, now: datetime = None) -> str:
     time_part = dt.strftime('%H:%M')
     return f'{date_part} at {time_part}'
 
-
-class MyClient(discord.Client):
-    async def on_ready(self):
-        print(f'Logged in as {self.user}!')
-
 intents = discord.Intents.default()
 intents.message_content = True
-
-client = MyClient(intents=intents)
+client = discord.Client(intents=intents)
 tree = app_commands.CommandTree(client)
 
-#Add the guild ids in which the slash command will appear. If it should be in all, remove the argument, 
-# but note that it will take some time (up to an hour) to register the command if it's for all guilds.
 @tree.command(name = "ping", description = "pings the bot", guild=discord.Object(id=lguildid))
 async def ping(interaction: discord.Interaction):
     t = time.localtime()
