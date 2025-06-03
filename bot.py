@@ -1,8 +1,6 @@
 import discord
 from discord import app_commands
 import time
-import math
-import zoneinfo
 from pathlib import Path
 
 t = time.localtime()
@@ -67,7 +65,7 @@ async def help(interaction: discord.Interaction):
                                             "* Messages from other bots are not logged.\n"+
                                             "* To prevent logging in specific channels, deny the bot access.\n"+
                                             "* To set the channel used for logging, use /set [channel]\n"+
-                                            "* You cannot use this bot in your own server. It was made for a specific server.", ephemeral=True)
+                                            "* You can self-host this bot for your own server by copying the code from https://github.com/TheGravy5/discord-logger and following the steps in the readme. Python path must be configured correctly and the required packages must be installed.", ephemeral=True)
 
 
 @client.event
