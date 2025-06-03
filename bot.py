@@ -40,7 +40,7 @@ intents.message_content = True
 client = discord.Client(intents=intents)
 tree = app_commands.CommandTree(client)
 
-@tree.command(name = "ping", description = "pings the bot", guild=discord.Object(id=lguildid))
+@tree.command(name = "ping", description = "Pong! (+ bot latency)", guild=discord.Object(id=lguildid))
 async def ping(interaction: discord.Interaction):
     t = time.localtime()
     current_time = time.strftime("%H:%M:%S", t)
@@ -55,9 +55,9 @@ async def set(interaction: discord.Interaction, channel: discord.TextChannel):
             f.writelines([str(loggingid), '\n', str(lguildid)])
             global loggingchannel
             loggingchannel = channel # type: ignore
-        await interaction.response.send_message(f"Set logging channel to <#{channel.id}>")
+        await interaction.response.send_message(f"Set logging channel to <#{channel.id}>.")
     else: 
-        await interaction.response.send_message(f"You do not have permissions to run this command.\n> Missing permission `MANAGE GUILD`", ephemeral=True)
+        await interaction.response.send_message(f"You do not have permissions to run this command.\n> Missing permission `MANAGE SERVER`", ephemeral=True)
 
 @tree.command(name="help", description="Gives information on how to configure the bot.", guild=discord.Object(id=lguildid))
 async def help(interaction: discord.Interaction):
@@ -65,7 +65,7 @@ async def help(interaction: discord.Interaction):
                                             "* Messages from other bots are not logged.\n"+
                                             "* To prevent logging in specific channels, deny the bot access.\n"+
                                             "* To set the channel used for logging, use /set [channel]\n"+
-                                            "* You can self-host this bot for your own server by copying the code from https://github.com/TheGravy5/discord-logger and following the steps in the readme. Python path must be configured correctly and the required packages must be installed.", ephemeral=True)
+                                            "* You can self-host this bot for your own server by copying the code from <https://github.com/TheGravy5/discord-logger> and following the steps in the readme. Python path must be configured correctly and the required packages must be installed.", ephemeral=True)
 
 
 @client.event
@@ -75,7 +75,8 @@ async def on_ready():
         global lguild
         lguild = guildtemp
     else:
-        print(f"guild {lguildid} not found; terminating bot")
+        
+        print(f"Guild {lguildid} not found; terminating bot.")
         exit(1)
     global loggingchannel
     loggingchannel = lguild.get_channel(loggingid) # type: ignore
@@ -91,7 +92,6 @@ async def on_message_delete(message: discord.Message):
         if (len(message.attachments) > 0):
             formattedFiles = []
             for attachment in message.attachments:
-                print(attachment.content_type)
                 if (attachment.content_type.startswith("image")):
                     formattedFiles.append(await attachment.to_file(use_cached=True))
             if (len(formattedFiles) == 1):
